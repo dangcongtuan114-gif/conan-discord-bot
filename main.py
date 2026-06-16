@@ -29,13 +29,19 @@ SERVER_IP = "83.223.199.40"
 QUERY_PORT = 28900
 # =================================================
 
-# --- TINY WEB SERVER TO TRICK RENDER FOR FREE TIER ---
+# --- FIXED WEB SERVER TO TRICK RENDER FOR FREE TIER ---
 class HealthCheckServer(BaseHTTPRequestHandler):
-    def do_GET(self):
+    def send_alive_response(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
+
+    def do_GET(self):
+        self.send_alive_response()
         self.wfile.write(b"Bot is alive!")
+
+    def do_HEAD(self):
+        self.send_alive_response()
 
 def run_web_server():
     server = HTTPServer(('0.0.0.0', 10000), HealthCheckServer)
