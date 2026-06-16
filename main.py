@@ -1,3 +1,12 @@
+# --- EMERGENCY PATCH FOR PYTHON 3.14 COMPATIBILITY ---
+import sys
+import types
+# Creates a fake empty audioop module to prevent discord.py from crashing on boot
+if 'audioop' not in sys.modules:
+    fake_audioop = types.ModuleType('audioop')
+    sys.modules['audioop'] = fake_audioop
+# =====================================================
+
 import os
 import discord
 from discord.ext import tasks
